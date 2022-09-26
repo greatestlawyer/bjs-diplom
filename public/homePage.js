@@ -15,6 +15,16 @@ ApiConnector.current(response => {
 });
 
 //Получение текущих курсов валюты
+// let ratesBoard = new RatesBoard();
+// const getExchangeRate = ApiConnector.getStocks(response => {
+//   if(response.success){
+//       ratesBoard.clearTable();
+//       ratesBoard.fillTable(response.data);
+//     }
+// });
+// getExchangeRate();
+// setInterval(getExchangeRate, 60000);
+
 let ratesBoard = new RatesBoard();
 const getExchangeRate = ApiConnector.getStocks(response => {
   if(response.success){
@@ -22,8 +32,13 @@ const getExchangeRate = ApiConnector.getStocks(response => {
       ratesBoard.fillTable(response.data);
     }
 });
-getExchangeRate();
-setInterval(getExchangeRate, 60000);
+
+function getRate(){
+  getExchangeRate
+}
+setInterval(getRate, 60000);
+
+
 
 //Операции с деньгами
 let moneyManager = new MoneyManager();
@@ -51,20 +66,32 @@ ApiConnector.transferMoney(data, moneyCallBack);
 //Работа с избранным
 
 //Запрос начального списка избранного
+// let favoritesWidget = new FavoritesWidget();
+// ApiConnector.getFavorites(response => {
+//   if(response.success){
+//     favoritesWidget.clearTable();
+//     favoritesWidget.fillTable(response.data);
+//     favoritesWidget.updateUsersList();
+//   }
+// });
+
 let favoritesWidget = new FavoritesWidget();
-ApiConnector.getFavorites(response => {
+const listRequest = ApiConnector.getFavorites(response => {
   if(response.success){
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
-    favoritesWidget.updateUsersList(data);
   }
 });
+function list() {
+  favoritesWidget.updateUsersList(listRequest);
+}
+
 //Добавление пользователя в список избранных
 const userCallBack = (response) => {
   if(response.success){
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
-    favoritesWidget.updateUsersList(data);
+    favoritesWidget.updateUsersList(response.data);
   } else {
         favoritesWidget.setMessage(false, response.error);
     }
