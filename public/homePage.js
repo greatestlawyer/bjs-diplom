@@ -14,7 +14,7 @@ ApiConnector.current(response => {
     }
 });
 
-//Получение текущих курсов валюты
+//Получение текущих курсов валюты (ранний код)
 // let ratesBoard = new RatesBoard();
 // const getExchangeRate = ApiConnector.getStocks(response => {
 //   if(response.success){
@@ -46,6 +46,7 @@ const moneyCallBack = (response) => {
   if(response.success){
       ProfileWidget.showProfile(response.data);
       moneyManager.setMessage(true,'Успешно!');
+      moneyManager.updateUsersList(response.data);
     } else {
         moneyManager.setMessage(false, response.error);
     }
@@ -63,15 +64,14 @@ moneyManager.sendMoneyCallback = (data) => {
 ApiConnector.transferMoney(data, moneyCallBack);
   }
 
-//Работа с избранным
-
+//Работа с избранным (ранний код)
 //Запрос начального списка избранного
 // let favoritesWidget = new FavoritesWidget();
 // ApiConnector.getFavorites(response => {
 //   if(response.success){
 //     favoritesWidget.clearTable();
 //     favoritesWidget.fillTable(response.data);
-//     favoritesWidget.updateUsersList();
+//     favoritesWidget.updateUsersList(response.data);
 //   }
 // });
 
@@ -80,10 +80,11 @@ const listRequest = ApiConnector.getFavorites(response => {
   if(response.success){
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
+    moneyManager.updateUsersList(response.data);
   }
 });
-function list() {
-  favoritesWidget.updateUsersList(listRequest);
+function list(){
+  listRequest;
 }
 
 //Добавление пользователя в список избранных
@@ -91,7 +92,7 @@ const userCallBack = (response) => {
   if(response.success){
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
-    favoritesWidget.updateUsersList(response.data);
+    moneyManager.updateUsersList(response.data);
   } else {
         favoritesWidget.setMessage(false, response.error);
     }
